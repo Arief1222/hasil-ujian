@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portal Pengumuman Hasil Ujian</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      pointer-events: none;
+    }
+    
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      padding: 40px;
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .header {
+      margin-bottom: 35px;
+    }
+    
+    .header h1 {
+      color: #2d3748;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    
+    .header p {
+      color: #718096;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    
+    .form-section {
+      margin-bottom: 30px;
+    }
+    
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .input-group label {
+      display: block;
+      text-align: left;
+      margin-bottom: 8px;
+      color: #4a5568;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 16px 20px;
+      font-size: 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      background: #f7fafc;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .input-group input:focus {
+      outline: none;
+      border-color: #74b9ff;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(116, 185, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .btn-check {
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(116, 185, 255, 0.4);
+    }
+    
+    .btn-check:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(116, 185, 255, 0.4);
+    }
+    
+    .btn-check:active {
+      transform: translateY(0);
+    }
+    
+    #hasil {
+      margin-top: 30px;
+      padding: 24px;
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 600;
+      display: none;
+      white-space: pre-line;
+      line-height: 1.6;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    #hasil::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .result-tertinggi {
+      background: linear-gradient(135deg, #007BFF 0%, #87b7ff 100%);
+      color: white;
+    }
+    
+    .result-lulus {
+      background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+      color: white;
+    }
+    
+    .result-tidak-lulus {
+      background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+      color: white;
+    }
+    
+    .result-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+    
+    .result-error {
+      background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+      color: white;
+    }
+    
+    .footer {
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #e2e8f0;
+      color: #718096;
+      font-size: 12px;
+    }
+    
+    .loading {
+      display: none;
+      margin-top: 20px;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e2e8f0;
+      border-top: 4px solid #74b9ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 20px;
+        margin: 10px;
+      }
+      
+      .header h1 {
+        font-size: 24px;
+      }
+      
+      #hasil {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎓 Pengumuman Hasil Ujian</h1>
+      <p>UIN Malang - Teknik Informatika</p>
+    </div>
+    
+    <div class="form-section">
+      <div class="input-group">
+        <label for="inputNIM">Nomor Induk Mahasiswa (NIM)</label>
+        <input type="text" id="inputNIM" placeholder="Masukkan NIM Kamu">
+      </div>
+      
+      <button class="btn-check" onclick="cekHasil()">
+        🔍 Cek Hasil Ujian
+      </button>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <p style="margin-top: 10px; color: #718096;">Memproses data...</p>
+    </div>
+    
+    <div id="hasil"></div>
+    
+    <div class="footer">
+      <p>© 2025 Sistem Informasi Akademik • Dibuat dengan ❤️</p>
+    </div>
+  </div>
+  
+  <script>
+    // Database Mahasiswa
+    const dataMahasiswa = {
+      "240605110099": {
+        nama: "Ghazy Praba Aryasatya",
+        status: "tertinggi"
+      },
+      "240605110231": {
+        nama: "Moh. Isro' Ridzaul Karim",
+        status: "di_atas_rata"
+      },
+      "240605110104": {
+        nama: "Vanya Nyssa Maulida",
+        status: "di_atas_rata"
+      },
+      "240605110041": {
+        nama: "Naufal Mubarok",
+        status: "di_atas_rata"
+      },
+      "240605110100": {
+        nama: "Muhammad Bagus Kurniawan",
+        status: "di_atas_rata"
+      },
+      "240605110116": {
+        nama: "M. Ikhwan Fahmi",
+        status: "di_bawah_rata"
+      },
+      "240605110005": {
+        nama: "Arum Nayla Farhani",
+        status: "di_bawah_rata"
+      },
+      "240605110114": {
+        nama: "MaulviIlmullah Faturrahman Al Afghani",
+        status: "di_bawah_rata"
+      },
+      "240605110102": {
+        nama: "Rizqullah Saputra",
+        status: "di_bawah_rata"
+      },
+      "240605110206": {
+        nama: "Afzaal Abrar Hidayat",
+        status: "di_bawah_rata"
+      },
+      "240605110003": {
+        nama: "Lailatul Maisurotul A",
+        status: "di_bawah_rata"
+      },
+      "240605110220": {
+        nama: "Ahmad Damar Amrullah",
+        status: "di_bawah_rata"
+      },
+      "240605110101": {
+        nama: "Muhamad Faqih Assya'roni",
+        status: "di_bawah_rata"
+      },
+      "240605110073": {
+        nama: "Alivia Wahyu Rindini",
+        status: "di_bawah_rata"
+      },
+      "240605110113": {
+        nama: "Mutiara Putri",
+        status: "di_bawah_rata"
+      },
+      "240605110108": {
+        nama: "Muhmamad Fauan Aryahusein",
+        status: "di_bawah_rata"
+      },
+      "240605110125": {
+        nama: "Imam Abdul Hakim",
+        status: "di_bawah_rata"
+      },
+      "240605110105": {
+        nama: "Bagas Prio Nugroho",
+        status: "di_bawah_rata"
+      }
+    };
+    
+    const rataRataKelas = 73;
+
+    function cekHasil() {
+      const nim = document.getElementById("inputNIM").value.trim();
+      const hasil = document.getElementById("hasil");
+      const loading = document.getElementById("loading");
+      
+      if (nim === "") {
+        showResult("⚠️ Lengkapi Data Terlebih Dahulu\n\nSilakan masukkan NIM Anda untuk melanjutkan proses pengecekan hasil ujian.", "result-warning");
+        return;
+      }
+
+      // Show loading animation
+      loading.style.display = "block";
+      hasil.style.display = "none";
+      
+      // Simulate processing time
+      setTimeout(() => {
+        loading.style.display = "none";
+        
+        if (dataMahasiswa[nim]) {
+          const mahasiswa = dataMahasiswa[nim];
+          
+          if (mahasiswa.status === "tertinggi") {
+            showResult(
+              `🏆 NILAI TERTINGGI KELAS! 🏆\n\nSelamat, ${mahasiswa.nama}!\n\nKamu berhasil meraih nilai tertinggi di kelas! \n\n "Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan." - Colin Powell`,
+              "result-tertinggi"
+            );
+          } else if (mahasiswa.status === "di_atas_rata") {
+            showResult(
+              `🌟 SELAMAT! 🌟\n\nKepada: ${mahasiswa.nama}\n\nSelamat! Nilai Kamu berada DI ATAS rata-rata kelas.\n\n "Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan." - Colin Powell`,
+              "result-lulus"
+            );
+          } else if (mahasiswa.status === "di_bawah_rata") {
+            showResult(
+              `📈 SEMANGAT TERUS BERKEMBANG! 📈\n\nKepada: ${mahasiswa.nama}\n\nTerima kasih atas usaha yang telah Kamu berikan. Nilai ini adalah bagian dari proses pembelajaran yang berharga. Setiap tantangan adalah kesempatan untuk tumbuh lebih kuat.\n\n💪 Tips untuk meningkatkan prestasi:\n• Buat jadwal belajar yang konsisten\n• Diskusi dengan teman dan dosen\n• Manfaatkan sumber belajar yang beragam\n• Jangan ragu bertanya saat ada kesulitan\n\n🌱 "Kegagalan adalah kesempatan untuk memulai lagi dengan lebih cerdas." - Henry Ford\n\n✨ Kami yakin Kamu pasti bisa mencapai hasil yang lebih baik di kesempatan berikutnya!`,
+              "result-tidak-lulus"
+            );
+          }
+        } else {
+          showResult(
+            `❌ DATA TIDAK DITEMUKAN\n\nNIM yang Kamu masukkan tidak terdaftar dalam sistem database kami.\n\nSilakan periksa kembali:\n• Pastikan NIM diketik dengan benar\n• Hubungi bagian administrasi akademik jika masalah berlanjut\n\n📞 Untuk bantuan lebih lanjut, silakan menghubungi help desk akademik.`,
+            "result-error"
+          );
+        }
+      }, 1500);
+    }
+    
+    function showResult(message, className) {
+      const hasil = document.getElementById("hasil");
+      hasil.textContent = message;
+      hasil.className = className;
+      hasil.style.display = "block";
+      
+      // Smooth scroll to result
+      hasil.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Enhanced keyboard navigation
+    document.getElementById("inputNIM").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        cekHasil();
+      }
+    });
+    
+    // Auto-format NIM input
+    document.getElementById("inputNIM").addEventListener("input", function(event) {
+      let value = event.target.value.replace(/\D/g, ''); // Only numbers
+      if (value.length > 12) {
+        value = value.slice(0, 12); // Limit to 12 digits
+      }
+      event.target.value = value;
+    });
+  </script>
+</body>
+</html>
