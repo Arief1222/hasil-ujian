@@ -13,7 +13,7 @@
     
     body {
       font-family: 'Inter', 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      background: #ffffff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -21,31 +21,18 @@
       justify-content: center;
       padding: 20px;
       position: relative;
-      overflow-x: hidden;
-    }
-    
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-      pointer-events: none;
     }
     
     .container {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
+      background: #ffffff;
       border-radius: 24px;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+      border: 2px solid #e2e8f0;
       padding: 40px;
       width: 100%;
       max-width: 480px;
       text-align: center;
       position: relative;
-      border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
     .header {
@@ -64,6 +51,38 @@
       color: #718096;
       font-size: 16px;
       font-weight: 500;
+    }
+    
+    .security-notice {
+      background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+      border: 2px solid #fc8181;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+    
+    .security-notice h3 {
+      color: #c53030;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .security-notice p {
+      color: #742a2a;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+    
+    .security-notice ul {
+      color: #742a2a;
+      font-size: 14px;
+      margin-left: 20px;
     }
     
     .form-section {
@@ -104,6 +123,12 @@
       transform: translateY(-2px);
     }
     
+    .input-group input:disabled {
+      background: #f1f5f9;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    
     .btn-check {
       background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
       color: white;
@@ -119,68 +144,20 @@
       box-shadow: 0 4px 15px rgba(116, 185, 255, 0.4);
     }
     
-    .btn-check:hover {
+    .btn-check:hover:not(:disabled) {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(116, 185, 255, 0.4);
     }
     
-    .btn-check:active {
+    .btn-check:active:not(:disabled) {
       transform: translateY(0);
     }
     
-    #hasil {
-      margin-top: 30px;
-      padding: 24px;
-      border-radius: 16px;
-      font-size: 18px;
-      font-weight: 600;
-      display: none;
-      white-space: pre-line;
-      line-height: 1.6;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    #hasil::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      animation: shimmer 2s infinite;
-    }
-    
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-    
-    .result-tertinggi {
-      background: linear-gradient(135deg, #007BFF 0%, #87b7ff 100%);
-      color: white;
-    }
-    
-    .result-lulus {
-      background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
-      color: white;
-    }
-    
-    .result-tidak-lulus {
-      background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
-      color: white;
-    }
-    
-    .result-warning {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      color: white;
-    }
-    
-    .result-error {
-      background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-      color: white;
+    .btn-check:disabled {
+      background: #cbd5e0;
+      box-shadow: none;
+      cursor: not-allowed;
+      opacity: 0.6;
     }
     
     .footer {
@@ -211,8 +188,109 @@
       100% { transform: rotate(360deg); }
     }
     
+    /* Result Page Styles */
+    .result-page {
+      display: none;
+      min-height: 100vh;
+      padding: 40px 20px;
+      background: #ffffff;
+    }
+    
+    .result-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+      border: 2px solid #e2e8f0;
+      padding: 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .result-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, rgba(116, 185, 255, 0.6), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .result-content {
+      font-size: 18px;
+      font-weight: 600;
+      white-space: pre-line;
+      line-height: 1.6;
+      color: #2d3748;
+    }
+    
+    .result-tertinggi {
+      background: linear-gradient(135deg, #007BFF 0%, #87b7ff 100%);
+      color: white;
+    }
+    
+    .result-tertinggi .result-content {
+      color: white;
+    }
+    
+    .result-lulus {
+      background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+      color: white;
+    }
+    
+    .result-lulus .result-content {
+      color: white;
+    }
+    
+    .result-tidak-lulus {
+      background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+      color: white;
+    }
+    
+    .result-tidak-lulus .result-content {
+      color: white;
+    }
+    
+    .result-error {
+      background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+      color: white;
+    }
+    
+    .result-error .result-content {
+      color: white;
+    }
+    
+    .result-footer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 12px;
+    }
+    
+    .main-page {
+      display: block;
+    }
+    
+    .main-page.hidden {
+      display: none;
+    }
+    
+    .result-page.show {
+      display: block;
+    }
+    
     @media (max-width: 480px) {
-      .container {
+      .container, .result-container {
         padding: 30px 20px;
         margin: 10px;
       }
@@ -221,39 +299,55 @@
         font-size: 24px;
       }
       
-      #hasil {
+      .result-content {
         font-size: 16px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>🎓 Pengumuman Hasil Ujian</h1>
-      <p>UIN Malang - Teknik Informatika</p>
-    </div>
-    
-    <div class="form-section">
-      <div class="input-group">
-        <label for="inputNIM">Nomor Induk Mahasiswa (NIM)</label>
-        <input type="text" id="inputNIM" placeholder="Masukkan NIM Kamu">
+  <!-- Main Page -->
+  <div class="main-page" id="mainPage">
+    <div class="container">
+      <div class="header">
+        <h1>🎓 Pengumuman Hasil Ujian</h1>
+        <p>UIN Malang - Teknik Informatika</p>
       </div>
       
-      <button class="btn-check" onclick="cekHasil()">
-        🔍 Cek Hasil Ujian
-      </button>
+      <div class="security-notice">
+        <p><strong>PENTING: Anda hanya dapat mengecek hasil ujian SATU KALI saja!</strong></p>
+      </div>
+      
+      <div class="form-section">
+        <div class="input-group">
+          <label for="inputNIM">Nomor Induk Mahasiswa (NIM)</label>
+          <input type="text" id="inputNIM" placeholder="Masukkan NIM Kamu">
+        </div>
+        
+        <button class="btn-check" id="btnCheck" onclick="cekHasil()">
+          🔍 Cek Hasil Ujian
+        </button>
+      </div>
+      
+      <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <p style="margin-top: 10px; color: #718096;">Memproses data...</p>
+      </div>
+      
+      <div class="footer">
+        <p>© 2025 Sistem Informasi Akademik • Dibuat dengan ❤️</p>
+      </div>
     </div>
-    
-    <div class="loading" id="loading">
-      <div class="loading-spinner"></div>
-      <p style="margin-top: 10px; color: #718096;">Memproses data...</p>
-    </div>
-    
-    <div id="hasil"></div>
-    
-    <div class="footer">
-      <p>© 2025 Sistem Informasi Akademik • Dibuat dengan ❤️</p>
+  </div>
+  
+  <!-- Result Page -->
+  <div class="result-page" id="resultPage">
+    <div class="result-container" id="resultContainer">
+      <div class="result-content" id="resultContent"></div>
+      <div class="result-footer">
+        <p>© 2025 Sistem Informasi Akademik • Dibuat dengan ❤️</p>
+        <p style="margin-top: 10px; font-style: italic;">Sistem telah terkunci. Anda tidak dapat mengecek hasil lagi.</p>
+      </div>
     </div>
   </div>
   
@@ -334,78 +428,203 @@
       }
     };
     
-    const rataRataKelas = 73;
-
+    // Security system - track if result has been checked using session fingerprint
+    let hasCheckedResult = false;
+    let sessionKey = generateSessionKey();
+    let checkedNIMs = new Set();
+    
+    // Generate unique session key based on browser and time
+    function generateSessionKey() {
+      const browserInfo = navigator.userAgent + navigator.language + screen.width + screen.height;
+      const timeKey = Math.floor(Date.now() / 1000); // Current timestamp in seconds
+      return btoa(browserInfo + timeKey).substring(0, 20);
+    }
+    
+    // Check if system is already locked on page load
+    function checkSystemStatus() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const lockParam = urlParams.get('locked');
+      const nimParam = urlParams.get('nim');
+      
+      if (lockParam === 'true') {
+        lockSystem();
+        if (nimParam) {
+          // Show that this NIM was already checked
+          showAlreadyCheckedMessage(nimParam);
+        }
+      }
+    }
+    
+    function lockSystem() {
+      hasCheckedResult = true;
+      const btnCheck = document.getElementById("btnCheck");
+      const inputNIM = document.getElementById("inputNIM");
+      
+      btnCheck.disabled = true;
+      inputNIM.disabled = true;
+      btnCheck.textContent = "🔒 Sistem Terkunci";
+      btnCheck.style.background = "#cbd5e0";
+      btnCheck.style.cursor = "not-allowed";
+    }
+    
+    function showAlreadyCheckedMessage(nim) {
+      alert(`🔒 SISTEM SUDAH TERKUNCI\n\nNIM ${nim} sudah pernah mengecek hasil ujian.\nSistem tidak mengizinkan pengecekan ulang untuk menjaga keamanan data.`);
+    }
+    
     function cekHasil() {
       const nim = document.getElementById("inputNIM").value.trim();
-      const hasil = document.getElementById("hasil");
       const loading = document.getElementById("loading");
+      const btnCheck = document.getElementById("btnCheck");
+      const inputNIM = document.getElementById("inputNIM");
       
       if (nim === "") {
-        showResult("⚠️ Lengkapi Data Terlebih Dahulu\n\nSilakan masukkan NIM Anda untuk melanjutkan proses pengecekan hasil ujian.", "result-warning");
+        alert("⚠️ Lengkapi Data Terlebih Dahulu\n\nSilakan masukkan NIM Anda untuk melanjutkan proses pengecekan hasil ujian.");
+        return;
+      }
+      
+      if (hasCheckedResult || checkedNIMs.has(nim)) {
+        alert("🔒 Sistem Terkunci\n\nNIM ini sudah pernah mengecek hasil ujian. Sistem tidak mengizinkan pengecekan kedua kali untuk menjaga keamanan data.");
         return;
       }
 
+      // Lock the system immediately and add NIM to checked list
+      hasCheckedResult = true;
+      checkedNIMs.add(nim);
+      lockSystem();
+      
+      // Update URL to include lock parameter
+      const newUrl = window.location.pathname + `?locked=true&nim=${nim}&session=${sessionKey}`;
+      window.history.replaceState({}, '', newUrl);
+
       // Show loading animation
       loading.style.display = "block";
-      hasil.style.display = "none";
       
       // Simulate processing time
       setTimeout(() => {
         loading.style.display = "none";
         
+        let message = "";
+        let className = "";
+        
         if (dataMahasiswa[nim]) {
           const mahasiswa = dataMahasiswa[nim];
           
           if (mahasiswa.status === "tertinggi") {
-            showResult(
-              `🏆 NILAI TERTINGGI KELAS! 🏆\n\nSelamat, ${mahasiswa.nama}!\n\nKamu berhasil meraih nilai tertinggi di kelas! \n\n "Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan." - Colin Powell`,
-              "result-tertinggi"
-            );
+            message = `🏆 NILAI TERTINGGI KELAS! 🏆\n\nSelamat, ${mahasiswa.nama}!\n\nKamu berhasil meraih nilai UAS tertinggi di kelas! \n\n "Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan." - Colin Powell`;
+            className = "result-tertinggi";
           } else if (mahasiswa.status === "di_atas_rata") {
-            showResult(
-              `🌟 SELAMAT! 🌟\n\nKepada: ${mahasiswa.nama}\n\nSelamat! Nilai Kamu berada DI ATAS rata-rata kelas.\n\n "Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan." - Colin Powell`,
-              "result-lulus"
-            );
+            message = `🌟 SELAMAT! 🌟\n\nKepada: ${mahasiswa.nama}\n\nSelamat! Nilai UAS Kamu berada DI ATAS rata-rata kelas.\n\n "Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan." - Colin Powell`;
+            className = "result-lulus";
           } else if (mahasiswa.status === "di_bawah_rata") {
-            showResult(
-              `📈 SEMANGAT TERUS BERKEMBANG! 📈\n\nKepada: ${mahasiswa.nama}\n\nTerima kasih atas usaha yang telah Kamu berikan. Nilai kamu masih dibawah rata-rata. Setiap tantangan adalah kesempatan untuk tumbuh lebih kuat.\n\n💪 Tips untuk meningkatkan prestasi:\n• Buat jadwal belajar yang konsisten\n• Diskusi dengan teman dan dosen\n• Manfaatkan sumber belajar yang beragam\n• Jangan ragu bertanya saat ada kesulitan\n\n🌱 "Kegagalan adalah kesempatan untuk memulai lagi dengan lebih cerdas." - Henry Ford\n\n✨ Kami yakin Kamu pasti bisa mencapai hasil yang lebih baik di kesempatan berikutnya!`,
-              "result-tidak-lulus"
-            );
+            message = `📈 SEMANGAT TERUS BERKEMBANG! 📈\n\nKepada: ${mahasiswa.nama}\n\nTerima kasih atas usaha yang telah Kamu berikan. Nilai UAS kamu masih DI BAWAH rata-rata kelas. Setiap tantangan adalah kesempatan untuk tumbuh lebih kuat.\n\n💪 Tips untuk meningkatkan prestasi:\n• Buat jadwal belajar yang konsisten\n• Diskusi dengan teman dan dosen\n• Manfaatkan sumber belajar yang beragam\n• Jangan ragu bertanya saat ada kesulitan\n\n🌱 "Kegagalan adalah kesempatan untuk memulai lagi dengan lebih cerdas." - Henry Ford\n\n✨ Kami yakin Kamu pasti bisa mencapai hasil yang lebih baik di kesempatan berikutnya!`;
+            className = "result-tidak-lulus";
           }
         } else {
-          showResult(
-            `❌ DATA TIDAK DITEMUKAN\n\nNIM yang Kamu masukkan tidak terdaftar dalam sistem database kami.\n\nSilakan periksa kembali:\n• Pastikan NIM diketik dengan benar\n• Hubungi bagian administrasi akademik jika masalah berlanjut\n\n📞 Untuk bantuan lebih lanjut, silakan menghubungi help desk akademik.`,
-            "result-error"
-          );
+          message = `❌ DATA TIDAK DITEMUKAN\n\nNIM yang Kamu masukkan tidak terdaftar dalam sistem database kami.\n\nSilakan periksa kembali:\n• Pastikan NIM diketik dengan benar\n• Hubungi bagian administrasi akademik jika masalah berlanjut\n\n📞 Untuk bantuan lebih lanjut, silakan menghubungi help desk akademik.\n\n⚠️ PERHATIAN: Anda sudah menggunakan kesempatan satu-satunya untuk mengecek hasil. Sistem kini terkunci.`;
+          className = "result-error";
         }
-      }, 1500);
+        
+        showResultPage(message, className);
+      }, 2000);
     }
     
-    function showResult(message, className) {
-      const hasil = document.getElementById("hasil");
-      hasil.textContent = message;
-      hasil.className = className;
-      hasil.style.display = "block";
+    function showResultPage(message, className) {
+      // Hide main page
+      document.getElementById("mainPage").classList.add("hidden");
       
-      // Smooth scroll to result
-      hasil.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Show result page
+      const resultPage = document.getElementById("resultPage");
+      const resultContainer = document.getElementById("resultContainer");
+      const resultContent = document.getElementById("resultContent");
+      
+      resultContent.textContent = message;
+      resultContainer.className = `result-container ${className}`;
+      resultPage.classList.add("show");
+      
+      // Smooth scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Check system status on page load
+    window.addEventListener('DOMContentLoaded', function() {
+      checkSystemStatus();
+    });
+    
     // Enhanced keyboard navigation
     document.getElementById("inputNIM").addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
+      if (event.key === "Enter" && !hasCheckedResult) {
         cekHasil();
       }
     });
     
     // Auto-format NIM input
     document.getElementById("inputNIM").addEventListener("input", function(event) {
-      let value = event.target.value.replace(/\D/g, ''); // Only numbers
-      if (value.length > 12) {
-        value = value.slice(0, 12); // Limit to 12 digits
+      if (!hasCheckedResult) {
+        let value = event.target.value.replace(/\D/g, ''); // Only numbers
+        if (value.length > 12) {
+          value = value.slice(0, 12); // Limit to 12 digits
+        }
+        event.target.value = value;
       }
-      event.target.value = value;
+    });
+    
+    // Prevent back button and refresh attempts with stronger warning
+    window.addEventListener('beforeunload', function(e) {
+      if (hasCheckedResult) {
+        const message = '⚠️ PERINGATAN KEAMANAN: Jika Anda meninggalkan halaman ini, sistem akan tetap terkunci dan Anda tidak akan bisa mengecek hasil lagi.';
+        e.preventDefault();
+        e.returnValue = message;
+        return message;
+      }
+    });
+    
+    // Handle page visibility changes
+    document.addEventListener('visibilitychange', function() {
+      if (hasCheckedResult && !document.hidden) {
+        // Page became visible again, ensure system is still locked
+        lockSystem();
+      }
+    });
+    
+    // Disable right-click context menu for additional security
+    document.addEventListener('contextmenu', function(e) {
+      if (hasCheckedResult) {
+        e.preventDefault();
+        alert('🔒 Fitur ini dinonaktifkan untuk menjaga keamanan sistem.');
+      }
+    });
+    
+    // Disable F12, Ctrl+Shift+I, Ctrl+U, etc.
+    document.addEventListener('keydown', function(e) {
+      if (hasCheckedResult) {
+        // Disable F12
+        if (e.key === 'F12') {
+          e.preventDefault();
+          alert('🔒 Fitur developer tools dinonaktifkan untuk menjaga keamanan sistem.');
+          return false;
+        }
+        
+        // Disable Ctrl+Shift+I (Developer Tools)
+        if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+          e.preventDefault();
+          alert('🔒 Fitur developer tools dinonaktifkan untuk menjaga keamanan sistem.');
+          return false;
+        }
+        
+        // Disable Ctrl+U (View Source)
+        if (e.ctrlKey && e.key === 'u') {
+          e.preventDefault();
+          alert('🔒 Fitur view source dinonaktifkan untuk menjaga keamanan sistem.');
+          return false;
+        }
+        
+        // Disable Ctrl+Shift+C (Inspect Element)
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+          e.preventDefault();
+          alert('🔒 Fitur inspect element dinonaktifkan untuk menjaga keamanan sistem.');
+          return false;
+        }
+      }
     });
   </script>
 </body>
