@@ -315,13 +315,21 @@
       </div>
       
       <div class="security-notice">
+        <h3>🔒 PEMBERITAHUAN KEAMANAN</h3>
         <p><strong>PENTING: Anda hanya dapat mengecek hasil ujian SATU KALI saja!</strong></p>
+        <p>Pastikan Anda memasukkan NIM dengan benar karena:</p>
+        <ul>
+          <li>Sistem akan terkunci setelah 1 kali pengecekan</li>
+          <li>Tidak ada kesempatan kedua untuk mengecek</li>
+          <li>Data yang sudah diakses tidak dapat diubah</li>
+        </ul>
+        <p><strong>Periksa kembali NIM Anda sebelum menekan tombol "Cek Hasil Ujian"</strong></p>
       </div>
       
       <div class="form-section">
         <div class="input-group">
           <label for="inputNIM">Nomor Induk Mahasiswa (NIM)</label>
-          <input type="text" id="inputNIM" placeholder="Masukkan NIM Kamu">
+          <input type="text" id="inputNIM" placeholder="Masukkan NIM Kamu dengan BENAR">
         </div>
         
         <button class="btn-check" id="btnCheck" onclick="cekHasil()">
@@ -428,48 +436,8 @@
       }
     };
     
-    // Security system - track if result has been checked using session fingerprint
+    // Security system - track if result has been checked
     let hasCheckedResult = false;
-    let sessionKey = generateSessionKey();
-    let checkedNIMs = new Set();
-    
-    // Generate unique session key based on browser and time
-    function generateSessionKey() {
-      const browserInfo = navigator.userAgent + navigator.language + screen.width + screen.height;
-      const timeKey = Math.floor(Date.now() / 1000); // Current timestamp in seconds
-      return btoa(browserInfo + timeKey).substring(0, 20);
-    }
-    
-    // Check if system is already locked on page load
-    function checkSystemStatus() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const lockParam = urlParams.get('locked');
-      const nimParam = urlParams.get('nim');
-      
-      if (lockParam === 'true') {
-        lockSystem();
-        if (nimParam) {
-          // Show that this NIM was already checked
-          showAlreadyCheckedMessage(nimParam);
-        }
-      }
-    }
-    
-    function lockSystem() {
-      hasCheckedResult = true;
-      const btnCheck = document.getElementById("btnCheck");
-      const inputNIM = document.getElementById("inputNIM");
-      
-      btnCheck.disabled = true;
-      inputNIM.disabled = true;
-      btnCheck.textContent = "🔒 Sistem Terkunci";
-      btnCheck.style.background = "#cbd5e0";
-      btnCheck.style.cursor = "not-allowed";
-    }
-    
-    function showAlreadyCheckedMessage(nim) {
-      alert(`🔒 SISTEM SUDAH TERKUNCI\n\nNIM ${nim} sudah pernah mengecek hasil ujian.\nSistem tidak mengizinkan pengecekan ulang untuk menjaga keamanan data.`);
-    }
     
     function cekHasil() {
       const nim = document.getElementById("inputNIM").value.trim();
@@ -482,19 +450,16 @@
         return;
       }
       
-      if (hasCheckedResult || checkedNIMs.has(nim)) {
-        alert("🔒 Sistem Terkunci\n\nNIM ini sudah pernah mengecek hasil ujian. Sistem tidak mengizinkan pengecekan kedua kali untuk menjaga keamanan data.");
+      if (hasCheckedResult) {
+        alert("🔒 Sistem Terkunci\n\nAnda sudah mengecek hasil ujian. Sistem tidak mengizinkan pengecekan kedua kali.");
         return;
       }
 
-      // Lock the system immediately and add NIM to checked list
+      // Lock the system immediately
       hasCheckedResult = true;
-      checkedNIMs.add(nim);
-      lockSystem();
-      
-      // Update URL to include lock parameter
-      const newUrl = window.location.pathname + `?locked=true&nim=${nim}&session=${sessionKey}`;
-      window.history.replaceState({}, '', newUrl);
+      btnCheck.disabled = true;
+      inputNIM.disabled = true;
+      btnCheck.textContent = "🔒 Sistem Terkunci";
 
       // Show loading animation
       loading.style.display = "block";
@@ -545,11 +510,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Check system status on page load
-    window.addEventListener('DOMContentLoaded', function() {
-      checkSystemStatus();
-    });
-    
     // Enhanced keyboard navigation
     document.getElementById("inputNIM").addEventListener("keypress", function(event) {
       if (event.key === "Enter" && !hasCheckedResult) {
@@ -568,21 +528,11 @@
       }
     });
     
-    // Prevent back button and refresh attempts with stronger warning
+    // Prevent back button and refresh attempts
     window.addEventListener('beforeunload', function(e) {
       if (hasCheckedResult) {
-        const message = '⚠️ PERINGATAN KEAMANAN: Jika Anda meninggalkan halaman ini, sistem akan tetap terkunci dan Anda tidak akan bisa mengecek hasil lagi.';
         e.preventDefault();
-        e.returnValue = message;
-        return message;
-      }
-    });
-    
-    // Handle page visibility changes
-    document.addEventListener('visibilitychange', function() {
-      if (hasCheckedResult && !document.hidden) {
-        // Page became visible again, ensure system is still locked
-        lockSystem();
+        e.returnValue = 'Anda akan kehilangan akses ke hasil ujian. Apakah Anda yakin ingin meninggalkan halaman ini?';
       }
     });
     
@@ -590,40 +540,6 @@
     document.addEventListener('contextmenu', function(e) {
       if (hasCheckedResult) {
         e.preventDefault();
-        alert('🔒 Fitur ini dinonaktifkan untuk menjaga keamanan sistem.');
-      }
-    });
-    
-    // Disable F12, Ctrl+Shift+I, Ctrl+U, etc.
-    document.addEventListener('keydown', function(e) {
-      if (hasCheckedResult) {
-        // Disable F12
-        if (e.key === 'F12') {
-          e.preventDefault();
-          alert('🔒 Fitur developer tools dinonaktifkan untuk menjaga keamanan sistem.');
-          return false;
-        }
-        
-        // Disable Ctrl+Shift+I (Developer Tools)
-        if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-          e.preventDefault();
-          alert('🔒 Fitur developer tools dinonaktifkan untuk menjaga keamanan sistem.');
-          return false;
-        }
-        
-        // Disable Ctrl+U (View Source)
-        if (e.ctrlKey && e.key === 'u') {
-          e.preventDefault();
-          alert('🔒 Fitur view source dinonaktifkan untuk menjaga keamanan sistem.');
-          return false;
-        }
-        
-        // Disable Ctrl+Shift+C (Inspect Element)
-        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-          e.preventDefault();
-          alert('🔒 Fitur inspect element dinonaktifkan untuk menjaga keamanan sistem.');
-          return false;
-        }
       }
     });
   </script>
