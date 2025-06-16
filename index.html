@@ -13,7 +13,7 @@
     
     body {
       font-family: 'Inter', 'Segoe UI', sans-serif;
-      background: #ffffff;
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -21,18 +21,31 @@
       justify-content: center;
       padding: 20px;
       position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      pointer-events: none;
     }
     
     .container {
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
       border-radius: 24px;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
-      border: 2px solid #e2e8f0;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
       padding: 40px;
       width: 100%;
       max-width: 480px;
       text-align: center;
       position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
     .header {
@@ -51,38 +64,6 @@
       color: #718096;
       font-size: 16px;
       font-weight: 500;
-    }
-    
-    .security-notice {
-      background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
-      border: 2px solid #fc8181;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
-      text-align: left;
-    }
-    
-    .security-notice h3 {
-      color: #c53030;
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .security-notice p {
-      color: #742a2a;
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 8px;
-    }
-    
-    .security-notice ul {
-      color: #742a2a;
-      font-size: 14px;
-      margin-left: 20px;
     }
     
     .form-section {
@@ -123,12 +104,6 @@
       transform: translateY(-2px);
     }
     
-    .input-group input:disabled {
-      background: #f1f5f9;
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-    
     .btn-check {
       background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
       color: white;
@@ -144,20 +119,68 @@
       box-shadow: 0 4px 15px rgba(116, 185, 255, 0.4);
     }
     
-    .btn-check:hover:not(:disabled) {
+    .btn-check:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(116, 185, 255, 0.4);
     }
     
-    .btn-check:active:not(:disabled) {
+    .btn-check:active {
       transform: translateY(0);
     }
     
-    .btn-check:disabled {
-      background: #cbd5e0;
-      box-shadow: none;
-      cursor: not-allowed;
-      opacity: 0.6;
+    #hasil {
+      margin-top: 30px;
+      padding: 24px;
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 600;
+      display: none;
+      white-space: pre-line;
+      line-height: 1.6;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    #hasil::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .result-tertinggi {
+      background: linear-gradient(135deg, #007BFF 0%, #87b7ff 100%);
+      color: white;
+    }
+    
+    .result-lulus {
+      background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+      color: white;
+    }
+    
+    .result-tidak-lulus {
+      background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+      color: white;
+    }
+    
+    .result-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+    
+    .result-error {
+      background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+      color: white;
     }
     
     .footer {
@@ -188,109 +211,8 @@
       100% { transform: rotate(360deg); }
     }
     
-    /* Result Page Styles */
-    .result-page {
-      display: none;
-      min-height: 100vh;
-      padding: 40px 20px;
-      background: #ffffff;
-    }
-    
-    .result-container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #ffffff;
-      border-radius: 24px;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
-      border: 2px solid #e2e8f0;
-      padding: 40px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .result-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, transparent, rgba(116, 185, 255, 0.6), transparent);
-      animation: shimmer 2s infinite;
-    }
-    
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-    
-    .result-content {
-      font-size: 18px;
-      font-weight: 600;
-      white-space: pre-line;
-      line-height: 1.6;
-      color: #2d3748;
-    }
-    
-    .result-tertinggi {
-      background: linear-gradient(135deg, #007BFF 0%, #87b7ff 100%);
-      color: white;
-    }
-    
-    .result-tertinggi .result-content {
-      color: white;
-    }
-    
-    .result-lulus {
-      background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
-      color: white;
-    }
-    
-    .result-lulus .result-content {
-      color: white;
-    }
-    
-    .result-tidak-lulus {
-      background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
-      color: white;
-    }
-    
-    .result-tidak-lulus .result-content {
-      color: white;
-    }
-    
-    .result-error {
-      background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-      color: white;
-    }
-    
-    .result-error .result-content {
-      color: white;
-    }
-    
-    .result-footer {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 12px;
-    }
-    
-    .main-page {
-      display: block;
-    }
-    
-    .main-page.hidden {
-      display: none;
-    }
-    
-    .result-page.show {
-      display: block;
-    }
-    
     @media (max-width: 480px) {
-      .container, .result-container {
+      .container {
         padding: 30px 20px;
         margin: 10px;
       }
@@ -299,63 +221,39 @@
         font-size: 24px;
       }
       
-      .result-content {
+      #hasil {
         font-size: 16px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Main Page -->
-  <div class="main-page" id="mainPage">
-    <div class="container">
-      <div class="header">
-        <h1>🎓 Pengumuman Hasil Ujian</h1>
-        <p>UIN Malang - Teknik Informatika</p>
-      </div>
-      
-      <div class="security-notice">
-        <h3>🔒 PEMBERITAHUAN KEAMANAN</h3>
-        <p><strong>PENTING: Anda hanya dapat mengecek hasil ujian SATU KALI saja!</strong></p>
-        <p>Pastikan Anda memasukkan NIM dengan benar karena:</p>
-        <ul>
-          <li>Sistem akan terkunci setelah 1 kali pengecekan</li>
-          <li>Tidak ada kesempatan kedua untuk mengecek</li>
-          <li>Data yang sudah diakses tidak dapat diubah</li>
-        </ul>
-        <p><strong>Periksa kembali NIM Anda sebelum menekan tombol "Cek Hasil Ujian"</strong></p>
-      </div>
-      
-      <div class="form-section">
-        <div class="input-group">
-          <label for="inputNIM">Nomor Induk Mahasiswa (NIM)</label>
-          <input type="text" id="inputNIM" placeholder="Masukkan NIM Kamu dengan BENAR">
-        </div>
-        
-        <button class="btn-check" id="btnCheck" onclick="cekHasil()">
-          🔍 Cek Hasil Ujian
-        </button>
-      </div>
-      
-      <div class="loading" id="loading">
-        <div class="loading-spinner"></div>
-        <p style="margin-top: 10px; color: #718096;">Memproses data...</p>
-      </div>
-      
-      <div class="footer">
-        <p>© 2025 Sistem Informasi Akademik • Dibuat dengan ❤️</p>
-      </div>
+  <div class="container">
+    <div class="header">
+      <h1>🎓 Pengumuman Hasil Ujian</h1>
+      <p>Praktikum PBO N - Teknik Informatika</p>
     </div>
-  </div>
-  
-  <!-- Result Page -->
-  <div class="result-page" id="resultPage">
-    <div class="result-container" id="resultContainer">
-      <div class="result-content" id="resultContent"></div>
-      <div class="result-footer">
-        <p>© 2025 Sistem Informasi Akademik • Dibuat dengan ❤️</p>
-        <p style="margin-top: 10px; font-style: italic;">Sistem telah terkunci. Anda tidak dapat mengecek hasil lagi.</p>
+    
+    <div class="form-section">
+      <div class="input-group">
+        <label for="inputNIM">Nomor Induk Mahasiswa (NIM)</label>
+        <input type="text" id="inputNIM" placeholder="Masukkan NIM Kamu">
       </div>
+      
+      <button class="btn-check" onclick="cekHasil()">
+        🔍 Cek Hasil Ujian
+      </button>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <p style="margin-top: 10px; color: #718096;">Memproses data...</p>
+    </div>
+    
+    <div id="hasil"></div>
+    
+    <div class="footer">
+      <p>© 2025 Sistem Informasi Akademik • Dibuat dengan ❤️</p>
     </div>
   </div>
   
@@ -436,111 +334,78 @@
       }
     };
     
-    // Security system - track if result has been checked
-    let hasCheckedResult = false;
-    
+    const rataRataKelas = 73;
+
     function cekHasil() {
       const nim = document.getElementById("inputNIM").value.trim();
+      const hasil = document.getElementById("hasil");
       const loading = document.getElementById("loading");
-      const btnCheck = document.getElementById("btnCheck");
-      const inputNIM = document.getElementById("inputNIM");
       
       if (nim === "") {
-        alert("⚠️ Lengkapi Data Terlebih Dahulu\n\nSilakan masukkan NIM Anda untuk melanjutkan proses pengecekan hasil ujian.");
+        showResult("⚠️ Lengkapi Data Terlebih Dahulu\n\nSilakan masukkan NIM Anda untuk melanjutkan proses pengecekan hasil ujian.", "result-warning");
         return;
       }
-      
-      if (hasCheckedResult) {
-        alert("🔒 Sistem Terkunci\n\nAnda sudah mengecek hasil ujian. Sistem tidak mengizinkan pengecekan kedua kali.");
-        return;
-      }
-
-      // Lock the system immediately
-      hasCheckedResult = true;
-      btnCheck.disabled = true;
-      inputNIM.disabled = true;
-      btnCheck.textContent = "🔒 Sistem Terkunci";
 
       // Show loading animation
       loading.style.display = "block";
+      hasil.style.display = "none";
       
       // Simulate processing time
       setTimeout(() => {
         loading.style.display = "none";
         
-        let message = "";
-        let className = "";
-        
         if (dataMahasiswa[nim]) {
           const mahasiswa = dataMahasiswa[nim];
           
           if (mahasiswa.status === "tertinggi") {
-            message = `🏆 NILAI TERTINGGI KELAS! 🏆\n\nSelamat, ${mahasiswa.nama}!\n\nKamu berhasil meraih nilai UAS tertinggi di kelas! \n\n "Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan." - Colin Powell`;
-            className = "result-tertinggi";
+            showResult(
+              `🏆 NILAI TERTINGGI KELAS! 🏆\n\nSelamat, ${mahasiswa.nama}!\n\nKamu berhasil meraih nilai UAS tertinggi di kelas! \n\n "Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan." - Colin Powell`,
+              "result-tertinggi"
+            );
           } else if (mahasiswa.status === "di_atas_rata") {
-            message = `🌟 SELAMAT! 🌟\n\nKepada: ${mahasiswa.nama}\n\nSelamat! Nilai UAS Kamu berada DI ATAS rata-rata kelas.\n\n "Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan." - Colin Powell`;
-            className = "result-lulus";
+            showResult(
+              `🌟 SELAMAT! 🌟\n\nKepada: ${mahasiswa.nama}\n\nSelamat! Nilai UAS Kamu berada DI ATAS rata-rata kelas.\n\n "Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan." - Colin Powell`,
+              "result-lulus"
+            );
           } else if (mahasiswa.status === "di_bawah_rata") {
-            message = `📈 SEMANGAT TERUS BERKEMBANG! 📈\n\nKepada: ${mahasiswa.nama}\n\nTerima kasih atas usaha yang telah Kamu berikan. Nilai UAS kamu masih DI BAWAH rata-rata kelas. Setiap tantangan adalah kesempatan untuk tumbuh lebih kuat.\n\n💪 Tips untuk meningkatkan prestasi:\n• Buat jadwal belajar yang konsisten\n• Diskusi dengan teman dan dosen\n• Manfaatkan sumber belajar yang beragam\n• Jangan ragu bertanya saat ada kesulitan\n\n🌱 "Kegagalan adalah kesempatan untuk memulai lagi dengan lebih cerdas." - Henry Ford\n\n✨ Kami yakin Kamu pasti bisa mencapai hasil yang lebih baik di kesempatan berikutnya!`;
-            className = "result-tidak-lulus";
+            showResult(
+              `📈 SEMANGAT TERUS BERKEMBANG! 📈\n\nKepada: ${mahasiswa.nama}\n\nTerima kasih atas usaha yang telah Kamu berikan. Nilai UAS kamu masih DI BAWAH rata-rata kelas. Setiap tantangan adalah kesempatan untuk tumbuh lebih kuat.\n\n💪 Tips untuk meningkatkan prestasi:\n• Buat jadwal belajar yang konsisten\n• Diskusi dengan teman dan dosen\n• Manfaatkan sumber belajar yang beragam\n• Jangan ragu bertanya saat ada kesulitan\n\n🌱 "Kegagalan adalah kesempatan untuk memulai lagi dengan lebih cerdas." - Henry Ford\n\n✨ Kami yakin Kamu pasti bisa mencapai hasil yang lebih baik di kesempatan berikutnya!`,
+              "result-tidak-lulus"
+            );
           }
         } else {
-          message = `❌ DATA TIDAK DITEMUKAN\n\nNIM yang Kamu masukkan tidak terdaftar dalam sistem database kami.\n\nSilakan periksa kembali:\n• Pastikan NIM diketik dengan benar\n• Hubungi bagian administrasi akademik jika masalah berlanjut\n\n📞 Untuk bantuan lebih lanjut, silakan menghubungi help desk akademik.\n\n⚠️ PERHATIAN: Anda sudah menggunakan kesempatan satu-satunya untuk mengecek hasil. Sistem kini terkunci.`;
-          className = "result-error";
+          showResult(
+            `❌ DATA TIDAK DITEMUKAN\n\nNIM yang Kamu masukkan tidak terdaftar dalam sistem database kami.\n\nSilakan periksa kembali:\n• Pastikan NIM diketik dengan benar\n• Hubungi bagian administrasi akademik jika masalah berlanjut\n\n📞 Untuk bantuan lebih lanjut, silakan menghubungi help desk akademik.`,
+            "result-error"
+          );
         }
-        
-        showResultPage(message, className);
-      }, 2000);
+      }, 1500);
     }
     
-    function showResultPage(message, className) {
-      // Hide main page
-      document.getElementById("mainPage").classList.add("hidden");
+    function showResult(message, className) {
+      const hasil = document.getElementById("hasil");
+      hasil.textContent = message;
+      hasil.className = className;
+      hasil.style.display = "block";
       
-      // Show result page
-      const resultPage = document.getElementById("resultPage");
-      const resultContainer = document.getElementById("resultContainer");
-      const resultContent = document.getElementById("resultContent");
-      
-      resultContent.textContent = message;
-      resultContainer.className = `result-container ${className}`;
-      resultPage.classList.add("show");
-      
-      // Smooth scroll to top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Smooth scroll to result
+      hasil.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     // Enhanced keyboard navigation
     document.getElementById("inputNIM").addEventListener("keypress", function(event) {
-      if (event.key === "Enter" && !hasCheckedResult) {
+      if (event.key === "Enter") {
         cekHasil();
       }
     });
     
     // Auto-format NIM input
     document.getElementById("inputNIM").addEventListener("input", function(event) {
-      if (!hasCheckedResult) {
-        let value = event.target.value.replace(/\D/g, ''); // Only numbers
-        if (value.length > 12) {
-          value = value.slice(0, 12); // Limit to 12 digits
-        }
-        event.target.value = value;
+      let value = event.target.value.replace(/\D/g, ''); // Only numbers
+      if (value.length > 12) {
+        value = value.slice(0, 12); // Limit to 12 digits
       }
-    });
-    
-    // Prevent back button and refresh attempts
-    window.addEventListener('beforeunload', function(e) {
-      if (hasCheckedResult) {
-        e.preventDefault();
-        e.returnValue = 'Anda akan kehilangan akses ke hasil ujian. Apakah Anda yakin ingin meninggalkan halaman ini?';
-      }
-    });
-    
-    // Disable right-click context menu for additional security
-    document.addEventListener('contextmenu', function(e) {
-      if (hasCheckedResult) {
-        e.preventDefault();
-      }
+      event.target.value = value;
     });
   </script>
 </body>
